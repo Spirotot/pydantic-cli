@@ -1,13 +1,19 @@
 import os
-import json
 import warnings
 
 import typing as T
 
 
 def _load_json_file(json_path: str) -> T.Dict[str, T.Any]:
+    try:
+        import yaml
+
+        load = lambda x: yaml.load(x, yaml.Loader)
+    except ModuleNotFoundError:
+        from json import load
+
     with open(json_path, "r") as f:
-        d: T.Dict[str, T.Any] = json.load(f)
+        d: T.Dict[str, T.Any] = load(f)
     return d
 
 
