@@ -15,7 +15,12 @@ class TestExamples(_TestHarness[Options]):
     CONFIG = HarnessConfig(Options, example_runner)
 
     def test_simple_01(self):
-        self.run_config(["--input_file", "/path/to/file.txt", "--max_record", "1234"])
+        with self.assertWarnsRegex(
+            UserWarning, f"Unable to find {Options.Config.CLI_JSON_CONFIG_PATH}"
+        ):
+            self.run_config(
+                ["--input_file", "/path/to/file.txt", "--max_record", "1234"]
+            )
 
     def test_simple_02(self):
         t = NamedTemporaryFile(mode="w", delete=True)
